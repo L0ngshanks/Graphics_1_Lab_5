@@ -81,23 +81,23 @@ void Parametric(VERTEX_4D _a, VERTEX_4D _b)
 		float currX = (_b.pos.x - _a.pos.x) * ratio + _a.pos.x;
 		float currY = (_b.pos.y - _a.pos.y) * ratio + _a.pos.y;
 
-		//unsigned int _color = ColorBlend(_a, _b, ratio);
+		unsigned int _color = ColorBlend(_a._color, _b._color, ratio);
 
 		if (PixelShader)
 		{
-			VEC_2D uv;
-			for(int y = 0; i < RASTER_WIDTH; ++i)
-				for (int x = 0; y < RASTER_HEIGHT; ++y)
-				{
-					uv.x = x / RASTER_WIDTH;
-					uv.y = y / RASTER_HEIGHT;
-				}
+			//VEC_2D uv;
+			//for(int y = 0; i < RASTER_WIDTH; ++i)
+			//	for (int x = 0; y < RASTER_HEIGHT; ++y)
+			//	{
+			//		uv.x = x / RASTER_WIDTH;
+			//		uv.y = y / RASTER_HEIGHT;
+			//	}
 			//float u = _a.uv.x * bary.
 			//PixelShader(ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z));
-			//PixelShader(_color, uv);
+			PixelShader(_color, _a.uv);
 		}
 
-		//PlotPixel(currX + 0.5f, currY + 0.5f, _color);
+		PlotPixel(currX + 0.5f, currY + 0.5f, _color);
 	}
 
 #endif
