@@ -91,6 +91,31 @@ float Min(float a, float b)
 	return (a < b) ? a : b;
 }
 
+float Max_3(float a, float b, float c)
+{
+	if (a > b)
+	{
+		if (a > c)
+			return a;
+	}
+	else if (b > c)
+		return b;
+
+	return c;
+}
+
+float Min_3(float a, float b, float c)
+{
+	if (a < b)
+	{
+		if (a < c)
+			return a;
+	}
+	else if (b < c)
+		return b;
+	return c;
+}
+
 float Degrees_To_Radians(float _deg)
 {
 	// NOTE: Do not modify.
@@ -111,8 +136,20 @@ unsigned int Coordinates(unsigned int x, unsigned int y, unsigned int width)
 float ImplicitLineEquation(VEC_4D _a, VEC_4D _b, VEC_4D _p)
 {
 	//(y1-y2)px + (x2-x1) + x1y2 - y1x2
-
+#if 1
 	return (_a.y - _b.y) * _p.x + (_b.x - _a.x) * _p.y + ((_a.x * _b.y) - (_a.y * _b.x));
+#elif 0
+	int aX = DOUBLETOFIXED(_a.x);
+	int aY = DOUBLETOFIXED(_a.y);
+	
+	int bX = DOUBLETOFIXED(_b.x);
+	int bY = DOUBLETOFIXED(_b.y);
+
+	int pX = DOUBLETOFIXED(_p.x);
+	int pY = DOUBLETOFIXED(_p.y);
+
+	return static_cast<float> FIXEDTODOUBLE(MUL((aY - bY), pX) + MUL((bX - aX), pY) + (MUL(aX, bY) - MUL(aY, bX)));
+#endif
 }
 
 VEC_3D ComputeBarycentric(VEC_4D _a, VEC_4D _b, VEC_4D _c, VEC_4D _p)
@@ -127,7 +164,6 @@ VEC_3D ComputeBarycentric(VEC_4D _a, VEC_4D _b, VEC_4D _c, VEC_4D _p)
 
 	return { (subA / maxA), (subB / maxB), (subC / maxC) };
 }
-
 
 //VEC_4D ComputeBarycentric(VEC_4D _a, VEC_4D _b, VEC_4D _c, VEC_4D _p)
 //{
@@ -144,22 +180,24 @@ VEC_3D ComputeBarycentric(VEC_4D _a, VEC_4D _b, VEC_4D _c, VEC_4D _p)
 
 unsigned int ColorBlend(unsigned int a, unsigned int b, float ratio)
 {
-	int aA = (a & 0xFF000000) >> 24;
-	int aR = (a & 0x00FF0000) >> 16;
-	int aG = (a & 0x0000FF00) >> 8;
-	int aB = (a & 0x000000FF);
+	int aA = INTTOFIXED((a & 0xFF000000) >> 24);
+	int aR = INTTOFIXED((a & 0x00FF0000) >> 16);
+	int aG = INTTOFIXED((a & 0x0000FF00) >> 8);
+	int aB = INTTOFIXED((a & 0x000000FF));
 
-	int bA = (b & 0xFF000000) >> 24;
-	int bR = (b & 0x00FF0000) >> 16;
-	int bG = (b & 0x0000FF00) >> 8;
-	int bB = (b & 0x000000FF);
+	int bA = INTTOFIXED((b & 0xFF000000) >> 24);
+	int bR = INTTOFIXED((b & 0x00FF0000) >> 16);
+	int bG = INTTOFIXED((b & 0x0000FF00) >> 8);
+	int bB = INTTOFIXED((b & 0x000000FF));
 
-	int alpha = ((float)(bA - aA) * ratio) + aA;
-	int red = ((float)(bR - aR) * ratio) + aR;
-	int green = ((float)(bG - aG) * ratio) + aG;
-	int blue = ((float)(bB - aB) * ratio) + aB;
+	int _ratio = DOUBLETOFIXED((double)ratio);
 
-	return (alpha << 24) | (red << 16) | (green << 8) | (blue);
+	int alpha = MUL((bA - aA), _ratio) + aA;
+	int red = MUL((bR - aR), _ratio) + aR;
+	int green = MUL((bG - aG), _ratio) + aG;
+	int blue = MUL((bB - aB), _ratio) + aB;
+
+	return (FIXEDTOINT(alpha) << 24) | (FIXEDTOINT(red) << 16) | (FIXEDTOINT(green) << 8) | (FIXEDTOINT(blue));
 
 }
 
@@ -167,7 +205,7 @@ unsigned int ColorBerp(unsigned int a, unsigned int b, unsigned int c, float rat
 {
 	// break down all 3 colors
 	// final red = R1 * rationAlpha + R2 * ratioBeta + R3 * ratioGamma
-
+#if 0
 	int aA = (a & 0xFF000000) >> 24;
 	int aR = (a & 0x00FF0000) >> 16;
 	int aG = (a & 0x0000FF00) >> 8;
@@ -190,6 +228,33 @@ unsigned int ColorBerp(unsigned int a, unsigned int b, unsigned int c, float rat
 	int blue = (aB * ratioAlpha) + (bB * ratioBeta) + (cB * ratioGamma);
 
 	return (alpha << 24) | (red << 16) | (green << 8) | (blue);
+#elif 1
+	int aA = INTTOFIXED((a & 0xFF000000) >> 24);
+	int aR = INTTOFIXED((a & 0x00FF0000) >> 16);
+	int aG = INTTOFIXED((a & 0x0000FF00) >> 8);
+	int aB = INTTOFIXED((a & 0x000000FF));
+
+	int bA = INTTOFIXED((b & 0xFF000000) >> 24);
+	int bR = INTTOFIXED((b & 0x00FF0000) >> 16);
+	int bG = INTTOFIXED((b & 0x0000FF00) >> 8);
+	int bB = INTTOFIXED((b & 0x000000FF));
+
+	int cA = INTTOFIXED((c & 0xFF000000) >> 24);
+	int cR = INTTOFIXED((c & 0x00FF0000) >> 16);
+	int cG = INTTOFIXED((c & 0x0000FF00) >> 8);
+	int cB = INTTOFIXED((c & 0x000000FF));
+
+	int _ratioAlpha = DOUBLETOFIXED(ratioAlpha);
+	int _ratioBeta = DOUBLETOFIXED(ratioBeta);
+	int _ratioGamma = DOUBLETOFIXED(ratioGamma);
+
+	int alpha = MUL(aA, _ratioAlpha) + MUL(bA, _ratioBeta) + MUL(cA, _ratioGamma);
+	int red = MUL(aR, _ratioAlpha) + MUL(bR, _ratioBeta) + MUL(cR, _ratioGamma);
+	int green = MUL(aG, _ratioAlpha) + MUL(bG, _ratioBeta) + MUL(cG, _ratioGamma);
+	int blue = MUL(aB, _ratioAlpha) + MUL(bB, _ratioBeta) + MUL(cB, _ratioGamma);
+
+	return (FIXEDTOINT(alpha) << 24) | (FIXEDTOINT(red) << 16) | (FIXEDTOINT(green) << 8) | (FIXEDTOINT(blue));
+#endif
 }
 
 MATRIX_3D Matrix_Identity_3D()
@@ -352,7 +417,6 @@ MATRIX_4D Matrix_to_Matrix_Multiply_4D(MATRIX_4D _m, MATRIX_4D _n)
 
 	return temp;
 }
-
 
 MATRIX_3D Matrix_Transpose_3D(MATRIX_3D _m)
 {

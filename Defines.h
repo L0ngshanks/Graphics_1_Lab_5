@@ -7,7 +7,7 @@
 #include <time.h>
 
 
-#define RASTER_WIDTH 750
+#define RASTER_WIDTH 550
 #define RASTER_HEIGHT 500
 #define NUM_PIXELS ((RASTER_WIDTH * RASTER_HEIGHT))
 
@@ -44,7 +44,7 @@ const int WholeMask = -1 ^ FractionMask;
 #define Magenta 0xFFFF00FF
 #define Yellow 0xFFFFFF00
 
-#define Limt 0XFF00FF00
+#define Lime 0XFF00FF00
 #define Fuchia 0XFFFF00FF
 #define Silver 0XFFC0C0C0
 #define Gray 0XFF808080

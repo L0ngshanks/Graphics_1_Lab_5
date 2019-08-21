@@ -1,5 +1,6 @@
 #pragma once
 #include "RendererMath.h"
+#include "treeolife.h"
 
 MATRIX_4D SV_WorldMatrix = Matrix_Identity_4D();
 
@@ -85,17 +86,17 @@ void PS_ChangeColor(unsigned int& changeColor, VEC_2D _v)
 //
 //}
 
-//void PS_White_Rabbit(unsigned int& _shade, VEC_2D _v)
-//{
-//	int x = _v.x * W_Rabbit_width;
-//	int y = _v.y * W_Rabbit_height;
-//
-//	_shade = W_Rabbit_pixels[Coordinates(x, y, W_Rabbit_width)];
-//
-//	//BGRA - >> XRGB
-//	_shade = ((_shade & 0xFF000000) >> 24) |
-//		((_shade & 0x00FF0000) >> 8) |
-//		((_shade & 0x0000FF00) << 8) |
-//		((_shade & 0x000000FF) << 24);
-//
-//}
+void PS_TreeOfLife(unsigned int& _shade, VEC_2D _v)
+{
+	int x = _v.x * treeolife_width;
+	int y = _v.y * treeolife_height;
+
+	_shade = treeolife_pixels[Coordinates(x, y, treeolife_width)];
+
+	//BGRA - >> XRGB
+	_shade = ((_shade & 0xFF000000) >> 24) |
+		((_shade & 0x00FF0000) >> 8) |
+		((_shade & 0x0000FF00) << 8) |
+		((_shade & 0x000000FF) << 24);
+
+}

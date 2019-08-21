@@ -31,7 +31,6 @@ void PlotPixel(VERTEX_2D _p)
 	Raster[(int)_p.pos.y * RASTER_WIDTH + (int)_p.pos.x] = _p._color;
 }
 
-
 void Parametric(VERTEX_4D _a, VERTEX_4D _b)
 {
 #if 0
@@ -103,7 +102,7 @@ void Parametric(VERTEX_4D _a, VERTEX_4D _b)
 #endif
 }
 
-void FillTriange(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
+void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 {
 #if 0
 	for (int y = 0; y < RASTER_HEIGHT; ++y)
@@ -120,7 +119,7 @@ void FillTriange(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 			}
 		}
 	}
-#elif 1
+#elif 0 //Brute force
 	if (VertexShader)
 	{
 		VertexShader(_a);
@@ -167,6 +166,74 @@ void FillTriange(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 			}
 		}
 	}
+#elif 1 //Better Brute
+	if (VertexShader)
+	{
+		VertexShader(_a);
+		VertexShader(_b);
+		VertexShader(_c);
+	}
+
+	_a.pos.x = NDC_to_Screen_X(_a.pos.x);
+	_a.pos.y = NDC_to_Screen_Y(_a.pos.y);
+
+	_b.pos.x = NDC_to_Screen_X(_b.pos.x);
+	_b.pos.y = NDC_to_Screen_Y(_b.pos.y);
+
+	_c.pos.x = NDC_to_Screen_X(_c.pos.x);
+	_c.pos.y = NDC_to_Screen_Y(_c.pos.y);
+
+	int startX = Min_3(_a.pos.x, _b.pos.x, _c.pos.x);
+	int startY = Min_3(_a.pos.y, _b.pos.y, _c.pos.y);
+
+	int endX = Max_3(_a.pos.x, _b.pos.x, _c.pos.x);
+	int endY = Max_3(_a.pos.y, _b.pos.y, _c.pos.y);
+
+	for (int startY = 0; startY < endY; ++startY)
+	{
+		for (int startX = 0; startX < endX; ++startX)
+		{
+			int currX = startX;
+			int currY = startY;
+			// ?? determine if x & y are in the triangle
+			VEC_3D bary = ComputeBarycentric({ _a.pos.x, _a.pos.y }, { _b.pos.x, _b.pos.y }, { _c.pos.x, _c.pos.y }, { currX * 1.0f, currY * 1.0f });
+			if (bary.x > 0 && bary.x < 1 &&
+				bary.y > 0 && bary.y < 1 &&
+				bary.z > 0 && bary.z < 1)
+			{
+				//unsigned int _color = _a._color;
+				unsigned int _color = ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z);
+
+				if (PixelShader)
+				{
+					//PixelShader();
+					VEC_2D uv;
+					uv.x = _a.uv.x * bary.x + _b.uv.x * bary.y + _c.uv.x * bary.z;
+					uv.y = _a.uv.y * bary.x + _b.uv.y * bary.y + _c.uv.y * bary.z;
+
+					PixelShader(_color, uv);
+				}
+
+				VERTEX_2D pixel_to_print;
+				//PlotPixel(x, y, ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z));
+				PlotPixel({ { (float)currX, (float)currY }, _color });
+
+			}
+		}
+	}
+
+#elif 0 //Lari's Parametric Fill
+	if (VertexShader)
+	{
+		VertexShader(_a);
+		VertexShader(_b);
+		VertexShader(_c);
+	}
+
+
+
+	float directionOfFill = ImplicitLineEquation(_a.pos, _b.pos, _c.pos);
+
 
 #endif
 }
