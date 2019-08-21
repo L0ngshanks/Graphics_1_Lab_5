@@ -166,7 +166,7 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 			}
 		}
 	}
-#elif 1 //Better Brute
+#elif 0 //Better Brute
 	if (VertexShader)
 	{
 		VertexShader(_a);
@@ -222,7 +222,7 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 		}
 	}
 
-#elif 0 //Lari's Parametric Fill
+#elif 1 //Lari's Parametric Fill
 	if (VertexShader)
 	{
 		VertexShader(_a);
@@ -230,7 +230,20 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 		VertexShader(_c);
 	}
 
-
+	VERTEX_4D sortArray[3] = { _a, _b, _c };
+	for(int i = 0; i < 3; ++i)
+		for (int j = 0; j < 3; j++)
+		{
+			if (sortArray[i].pos.y > sortArray[j].pos.y)
+			{
+				VERTEX_4D temp = sortArray[i];
+				sortArray[i] = sortArray[j];
+				sortArray[j] = temp;
+			}
+		}
+	VERTEX_4D top = sortArray[2];
+	VERTEX_4D middle = sortArray[1];
+	VERTEX_4D bottom = sortArray[0];
 
 	float directionOfFill = ImplicitLineEquation(_a.pos, _b.pos, _c.pos);
 
