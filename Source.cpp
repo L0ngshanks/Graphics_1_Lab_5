@@ -33,62 +33,62 @@ int main(int argc, char** argv)
 	//	{ {-.05, .05, -.05, 1}, 0xFFFFFFFF}
 	//};
 
-	//VERTEX_4D grid[40]
-	//{
-	//	Outline
-	//	{{-.5, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, .5, 1}, 0xFFFFFFFF},
-	//	{{-.5, 0, .5, 1}, 0xFFFFFFFF},
+	VERTEX_4D grid[40]
+	{
+		//Outline
+		{{-.5, 0, -.5, 1}, 0xFFFFFFFF},
+		{{.5, 0, -.5, 1}, 0xFFFFFFFF},
+		{{.5, 0, .5, 1}, 0xFFFFFFFF},
+		{{-.5, 0, .5, 1}, 0xFFFFFFFF},
 
-	//	Rows - Negative
-	//	{{-.5, 0, -.1, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, -.1, 1}, 0xFFFFFFFF},
-	//	{ {-.5, 0, -.2, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, -.2, 1}, 0xFFFFFFFF},
-	//	{ {-.5, 0, -.3, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, -.3, 1}, 0xFFFFFFFF},
-	//	{ {-.5, 0,-.4, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, -.4, 1}, 0xFFFFFFFF},
+		//Rows - Negative
+		{{-.5, 0, -.1, 1}, 0xFFFFFFFF},
+		{{.5, 0, -.1, 1}, 0xFFFFFFFF},
+		{ {-.5, 0, -.2, 1}, 0xFFFFFFFF},
+		{{.5, 0, -.2, 1}, 0xFFFFFFFF},
+		{ {-.5, 0, -.3, 1}, 0xFFFFFFFF},
+		{{.5, 0, -.3, 1}, 0xFFFFFFFF},
+		{ {-.5, 0,-.4, 1}, 0xFFFFFFFF},
+		{{.5, 0, -.4, 1}, 0xFFFFFFFF},
 
-	//	Rows - Positive
-	//	{{-.5, 0, .1, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, .1, 1}, 0xFFFFFFFF},
-	//	{ {-.5, 0, .2, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, .2, 1}, 0xFFFFFFFF},
-	//	{ {-.5, 0, .3, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, .3, 1}, 0xFFFFFFFF},
-	//	{ {-.5, 0, .4, 1}, 0xFFFFFFFF},
-	//	{{.5, 0, .4, 1}, 0xFFFFFFFF},
+		//Rows - Positive
+		{{-.5, 0, .1, 1}, 0xFFFFFFFF},
+		{{.5, 0, .1, 1}, 0xFFFFFFFF},
+		{ {-.5, 0, .2, 1}, 0xFFFFFFFF},
+		{{.5, 0, .2, 1}, 0xFFFFFFFF},
+		{ {-.5, 0, .3, 1}, 0xFFFFFFFF},
+		{{.5, 0, .3, 1}, 0xFFFFFFFF},
+		{ {-.5, 0, .4, 1}, 0xFFFFFFFF},
+		{{.5, 0, .4, 1}, 0xFFFFFFFF},
 
-	//	Center - Row
-	//	{{-.5, 0.0, 0, 1}, 0xFFFFFFFF},
-	//	{{.5, 0.0, 0, 1}, 0xFFFFFFFF},
-	//	Center Collumn
-	//	{{0, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {0, 0, .5, 1}, 0xFFFFFFFF},
+		//Center - Row
+		{{-.5, 0.0, 0, 1}, 0xFFFFFFFF},
+		{{.5, 0.0, 0, 1}, 0xFFFFFFFF},
+		//Center Column
+		{{0, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {0, 0, .5, 1}, 0xFFFFFFFF},
 
-	//	Collumns Negative
-	//	{ {-.1, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {-.1, 0, .5, 1}, 0xFFFFFFFF},
-	//	{ {-.2, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {-.2, 0, .5, 1}, 0xFFFFFFFF},
-	//	{ {-.3, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {-.3, 0, .5, 1}, 0xFFFFFFFF},
-	//	{ {-.4, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {-.4, 0, .5, 1}, 0xFFFFFFFF},
+		//Columns Negative
+		{ {-.1, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {-.1, 0, .5, 1}, 0xFFFFFFFF},
+		{ {-.2, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {-.2, 0, .5, 1}, 0xFFFFFFFF},
+		{ {-.3, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {-.3, 0, .5, 1}, 0xFFFFFFFF},
+		{ {-.4, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {-.4, 0, .5, 1}, 0xFFFFFFFF},
 
-	//	Collumns Positive
-	//	{ {.1, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {.1, 0, .5, 1}, 0xFFFFFFFF},
-	//	{ {.2, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {.2, 0, .5, 1}, 0xFFFFFFFF},
-	//	{ {.3, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {.3, 0, .5, 1}, 0xFFFFFFFF},
-	//	{ {.4, 0, -.5, 1}, 0xFFFFFFFF},
-	//	{ {.4, 0, .5, 1}, 0xFFFFFFFF}
+		//Columns Positive
+		{ {.1, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {.1, 0, .5, 1}, 0xFFFFFFFF},
+		{ {.2, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {.2, 0, .5, 1}, 0xFFFFFFFF},
+		{ {.3, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {.3, 0, .5, 1}, 0xFFFFFFFF},
+		{ {.4, 0, -.5, 1}, 0xFFFFFFFF},
+		{ {.4, 0, .5, 1}, 0xFFFFFFFF}
 
-	//};
+	};
 
 	double startTime = GetTickCount64();
 	float degree = 0;
@@ -100,7 +100,6 @@ int main(int argc, char** argv)
 	float fovIncrement = 0.05f;
 	bool forward = true;
 
-	float * z_buffer = new float[NUM_PIXELS];
 
 	VEC_4D translation = { 0, .25, 0, 0 };
 	VEC_4D sataliteTranslation = { .5, 0, 0, 0 };
@@ -112,8 +111,8 @@ int main(int argc, char** argv)
 
 	while (RS_Update(Raster, NUM_PIXELS))
 	{
-		for (int i = 0; i < NUM_PIXELS; ++i)
-			z_buffer[i] = 1;
+		Clear_Z_Buffer();
+		ClearScreen();
 
 		if (GetTickCount() - startTime >= 0)
 		{
@@ -225,45 +224,45 @@ int main(int argc, char** argv)
 
 
 		//Grid
-		//VertexShader = VS_World;
-		//SV_WorldMatrix = gridMatrix;
+		VertexShader = VS_World;
+		SV_WorldMatrix = gridMatrix;
 
-		//PixelShader = PS_ChangeColor;
-		//SP_Color = White;
+		PixelShader = PS_ChangeColor;
+		SP_Color = White;
 
-		////Outline
-		//Parametric(grid[0], grid[1]);
-		//Parametric(grid[1], grid[2]);
-		//Parametric(grid[2], grid[3]);
-		//Parametric(grid[3], grid[0]);
+		//Outline
+		Parametric(grid[0], grid[1]);
+		Parametric(grid[1], grid[2]);
+		Parametric(grid[2], grid[3]);
+		Parametric(grid[3], grid[0]);
 
-		////Negative Rows
-		//Parametric(grid[4], grid[5]);
-		//Parametric(grid[6], grid[7]);
-		//Parametric(grid[8], grid[9]);
-		//Parametric(grid[10], grid[11]);
+		//Negative Rows
+		Parametric(grid[4], grid[5]);
+		Parametric(grid[6], grid[7]);
+		Parametric(grid[8], grid[9]);
+		Parametric(grid[10], grid[11]);
 
-		////Positive Row
-		//Parametric(grid[12], grid[13]);
-		//Parametric(grid[14], grid[15]);
-		//Parametric(grid[16], grid[17]);
-		//Parametric(grid[18], grid[19]);
+		//Positive Row
+		Parametric(grid[12], grid[13]);
+		Parametric(grid[14], grid[15]);
+		Parametric(grid[16], grid[17]);
+		Parametric(grid[18], grid[19]);
 
-		////Center Lines
-		//Parametric(grid[20], grid[21]);
-		//Parametric(grid[22], grid[23]);
+		//Center Lines
+		Parametric(grid[20], grid[21]);
+		Parametric(grid[22], grid[23]);
 
-		////Collumns Negative
-		//Parametric(grid[24], grid[25]);
-		//Parametric(grid[26], grid[27]);
-		//Parametric(grid[28], grid[29]);
-		//Parametric(grid[30], grid[31]);
+		//Collumns Negative
+		Parametric(grid[24], grid[25]);
+		Parametric(grid[26], grid[27]);
+		Parametric(grid[28], grid[29]);
+		Parametric(grid[30], grid[31]);
 
-		////Collumn Positive
-		//Parametric(grid[32], grid[33]);
-		//Parametric(grid[34], grid[35]);
-		//Parametric(grid[36], grid[37]);
-		//Parametric(grid[38], grid[39]);
+		//Collumn Positive
+		Parametric(grid[32], grid[33]);
+		Parametric(grid[34], grid[35]);
+		Parametric(grid[36], grid[37]);
+		Parametric(grid[38], grid[39]);
 
 	};
 

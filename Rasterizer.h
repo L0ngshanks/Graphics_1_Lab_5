@@ -3,11 +3,22 @@
 
 unsigned int Raster[NUM_PIXELS];
 
+float* z_buffer = new float[NUM_PIXELS];
+
+
 void ClearScreen()
 {
 	for (int i = 0; i < NUM_PIXELS; ++i)
 	{
 		Raster[i] = Black;
+	}
+}
+
+void Clear_Z_Buffer()
+{
+	for (int i = 0; i < NUM_PIXELS; ++i)
+	{
+		z_buffer[i] = 1;
 	}
 }
 
@@ -21,15 +32,15 @@ void PlotPixel(int _x, int _y, unsigned int _color)
 	Raster[_y * RASTER_WIDTH + _x] = _color;
 }
 
-void PlotPixel(VERTEX_2D _p)
-{
-	assert(_p.pos.x < RASTER_WIDTH);
-	assert(_p.pos.y < RASTER_HEIGHT);
-	assert(_p.pos.x >= 0);
-	assert(_p.pos.y >= 0);
-
-	Raster[(int)_p.pos.y * RASTER_WIDTH + (int)_p.pos.x] = _p._color;
-}
+//void PlotPixel(VERTEX_2D _p)
+//{
+//	assert(_p.pos.x < RASTER_WIDTH);
+//	assert(_p.pos.y < RASTER_HEIGHT);
+//	assert(_p.pos.x >= 0);
+//	assert(_p.pos.y >= 0);
+//
+//	Raster[(int)_p.pos.y * RASTER_WIDTH + (int)_p.pos.x] = _p._color;
+//}
 
 void Parametric(VERTEX_4D _a, VERTEX_4D _b)
 {
@@ -84,16 +95,8 @@ void Parametric(VERTEX_4D _a, VERTEX_4D _b)
 
 		if (PixelShader)
 		{
-			//VEC_2D uv;
-			//for(int y = 0; i < RASTER_WIDTH; ++i)
-			//	for (int x = 0; y < RASTER_HEIGHT; ++y)
-			//	{
-			//		uv.x = x / RASTER_WIDTH;
-			//		uv.y = y / RASTER_HEIGHT;
-			//	}
-			//float u = _a.uv.x * bary.
-			//PixelShader(ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z));
-			PixelShader(_color, _a.uv);
+			VEC_2D uv;
+			PixelShader(_color, uv);
 		}
 
 		PlotPixel(currX + 0.5f, currY + 0.5f, _color);
@@ -199,10 +202,6 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 			// ?? determine if x & y are in the triangle
 			VEC_3D bary = ComputeBarycentric({ _a.pos.x, _a.pos.y }, { _b.pos.x, _b.pos.y }, { _c.pos.x, _c.pos.y }, { currX * 1.0f, currY * 1.0f });
 
-			float z_buff = (_a.pos.z * bary.x) + (_b.pos.z * bary.y) + (_c.pos.z * bary.z);
-			
-
-
 			if (bary.x > 0 && bary.x < 1 &&
 				bary.y > 0 && bary.y < 1 &&
 				bary.z > 0 && bary.z < 1)
@@ -210,19 +209,28 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 				//unsigned int _color = _a._color;
 				unsigned int _color = ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z);
 
-				if (PixelShader)
-				{
-					//PixelShader();
-					VEC_2D uv;
-					uv.x = _a.uv.x * bary.x + _b.uv.x * bary.y + _c.uv.x * bary.z;
-					uv.y = _a.uv.y * bary.x + _b.uv.y * bary.y + _c.uv.y * bary.z;
+				float zBufferRatio = (_a.pos.z * bary.x) + (_b.pos.z * bary.y) + (_c.pos.z * bary.z);
 
-					PixelShader(_color, uv);
+				unsigned int buffer_index = Coordinates(currX, currY, RASTER_WIDTH);
+				if (zBufferRatio < z_buffer[buffer_index])
+				{
+					if (PixelShader)
+					{
+						VEC_2D uv;
+						uv.x = _a.uv.x * bary.x + _b.uv.x * bary.y + _c.uv.x * bary.z;
+						uv.y = _a.uv.y * bary.x + _b.uv.y * bary.y + _c.uv.y * bary.z;
+
+						PixelShader(_color, uv);
+						//PixelShader();
+					}
+
+					z_buffer[buffer_index] = zBufferRatio;
+
+					//PlotPixel(x, y, ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z));
+					//PlotPixel({ { (float)currX, (float)currY }, _color });
+					PlotPixel(currX, currY, _color);
 				}
 
-				VERTEX_2D pixel_to_print;
-				//PlotPixel(x, y, ColorBerp(_a._color, _b._color, _c._color, bary.x, bary.y, bary.z));
-				PlotPixel({ { (float)currX, (float)currY }, _color });
 
 			}
 		}
@@ -237,7 +245,7 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 	}
 
 	VERTEX_4D sortArray[3] = { _a, _b, _c };
-	for(int i = 0; i < 3; ++i)
+	for (int i = 0; i < 3; ++i)
 		for (int j = 0; j < 3; j++)
 		{
 			if (sortArray[i].pos.y > sortArray[j].pos.y)
