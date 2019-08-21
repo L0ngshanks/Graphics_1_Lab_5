@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 
 	double startTime = GetTickCount64();
 	float degree = 0;
-	float degreeIncrement = 0.5f;
+	float degreeIncrement = 1.0f;
 
 	float fov = 90.0f;
 	float fovMax = 115.0f;
@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 	float fovIncrement = 0.05f;
 	bool forward = true;
 
-	float z_buffer[NUM_PIXELS];
+	float * z_buffer = new float[NUM_PIXELS];
 
 	VEC_4D translation = { 0, .25, 0, 0 };
 	VEC_4D sataliteTranslation = { .5, 0, 0, 0 };
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 		for (int i = 0; i < NUM_PIXELS; ++i)
 			z_buffer[i] = 1;
 
-		if (GetTickCount() - startTime >= 20)
+		if (GetTickCount() - startTime >= 0)
 		{
 			startTime = 0;
 			if (degree > 360)

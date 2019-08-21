@@ -166,7 +166,7 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 			}
 		}
 	}
-#elif 0 //Better Brute
+#elif 1 //Better Brute
 	if (VertexShader)
 	{
 		VertexShader(_a);
@@ -195,8 +195,14 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 		{
 			int currX = startX;
 			int currY = startY;
+
 			// ?? determine if x & y are in the triangle
 			VEC_3D bary = ComputeBarycentric({ _a.pos.x, _a.pos.y }, { _b.pos.x, _b.pos.y }, { _c.pos.x, _c.pos.y }, { currX * 1.0f, currY * 1.0f });
+
+			float z_buff = (_a.pos.z * bary.x) + (_b.pos.z * bary.y) + (_c.pos.z * bary.z);
+			
+
+
 			if (bary.x > 0 && bary.x < 1 &&
 				bary.y > 0 && bary.y < 1 &&
 				bary.z > 0 && bary.z < 1)
@@ -222,7 +228,7 @@ void FillTriangle(VERTEX_4D _a, VERTEX_4D _b, VERTEX_4D _c)
 		}
 	}
 
-#elif 1 //Lari's Parametric Fill
+#elif 0 //Lari's Parametric Fill
 	if (VertexShader)
 	{
 		VertexShader(_a);
