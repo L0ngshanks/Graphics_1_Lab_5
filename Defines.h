@@ -7,7 +7,7 @@
 #include <time.h>
 
 
-#define RASTER_WIDTH 550
+#define RASTER_WIDTH 600
 #define RASTER_HEIGHT 500
 #define NUM_PIXELS ((RASTER_WIDTH * RASTER_HEIGHT))
 

@@ -148,7 +148,9 @@ float ImplicitLineEquation(VEC_4D _a, VEC_4D _b, VEC_4D _p)
 	int pX = DOUBLETOFIXED(_p.x);
 	int pY = DOUBLETOFIXED(_p.y);
 
-	return static_cast<float> FIXEDTODOUBLE(MUL((aY - bY), pX) + MUL((bX - aX), pY) + (MUL(aX, bY) - MUL(aY, bX)));
+	int abX = bX - aX;
+	int abY = aY - bY;
+	return FIXEDTODOUBLE(MUL(abY, pX) + MUL(abX, pY) + (MUL(aX, bY) - MUL(aY, bX)));
 #endif
 }
 

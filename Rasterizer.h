@@ -91,15 +91,23 @@ void Parametric(VERTEX_4D _a, VERTEX_4D _b)
 		float currX = (_b.pos.x - _a.pos.x) * ratio + _a.pos.x;
 		float currY = (_b.pos.y - _a.pos.y) * ratio + _a.pos.y;
 
+		float currZ = (_b.pos.z - _a.pos.z) * ratio + _a.pos.z;
+
 		unsigned int _color = ColorBlend(_a._color, _b._color, ratio);
 
-		if (PixelShader)
+		unsigned int zBufferIndex = Coordinates(currX, currY, RASTER_WIDTH);
+		if (currZ < z_buffer[zBufferIndex])
 		{
-			VEC_2D uv;
-			PixelShader(_color, uv);
-		}
+			if (PixelShader)
+			{
+				VEC_2D uv;
+				PixelShader(_color, uv);
+			}
+			z_buffer[zBufferIndex] = currZ;
 
 		PlotPixel(currX + 0.5f, currY + 0.5f, _color);
+		}
+
 	}
 
 #endif
